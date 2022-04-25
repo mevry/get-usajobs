@@ -8,8 +8,7 @@ class SavedQueryValidateSet : System.Management.Automation.IValidateSetValuesGen
 function Find-Usajobs{
     [cmdletbinding()]
     param(
-        [Parameter(Mandatory)]
-        [string]$ApiKey,
+        [string]$ApiKey = $Global:ApiKey,
         [ValidateSet([SavedQueryValidateSet])]
         $SavedQuery,
 
@@ -25,7 +24,9 @@ function Find-Usajobs{
         $response = Invoke-UsajobsPaginatedRequest -ApiKey $ApiKey -Body $body 
 
         $response | `
-            Select-Object PositionTitle, `
+            Select-Object `
+            @{n="ControlNumber";e={$_.PositionUri -split "/" | Select-Object -Last 1}}, `
+            PositionTitle, `
             DepartmentName, `
             @{n="City";e={$_.PositionLocationDisplay -split ", " | Select-Object -First 1}}, `
             @{n="Region";e={$_.PositionLocationDisplay -split ", " | Select-Object -First 1 -Skip 1}}, `

@@ -4,8 +4,7 @@
 [cmdletbinding()]
 param(
     [string]$Path = "$((Get-Date).ToString("yyyy-MM-dd"))_USAJOBSAllSearches.xlsx",
-    [Parameter(Mandatory)]
-    $ApiKey
+    $ApiKey = $Global:ApiKey
 )
 
 foreach($key in $SavedQueries.Keys){
