@@ -1,9 +1,8 @@
 #using module ".\classes\.psm1"
 
-$public = Get-ChildItem -Recurse -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue
-$private = Get-ChildItem -Recurse -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue
+$dotSource = Get-ChildItem -Include "*.ps1" -Recurse -Path @("$PSScriptRoot\private","$PSScriptRoot\public")
 
-foreach($file in ($public + $private)){
+foreach($file in ($public + $dotSource)){
     try{
         #dot source script
         . $file.FullName
