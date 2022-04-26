@@ -20,6 +20,8 @@ function Find-Usajobs{
         [string[]]$ControlNumberFilter,
         [switch]$RawQuery,
         [int]$JobCategoryCode,
+        [string]$Keyword,
+        [string]$PositionTitle,
         [string]$LocationName,
         [ValidateSet([PayGradeValidateSet])]
         [string]$PayGradeLow,
@@ -36,6 +38,8 @@ function Find-Usajobs{
 
     #Set query parameters, if specified
     if($JobCategoryCode){ $body['JobCategoryCode'] = $JobCategoryCode }
+    if($Keyword){ $body['Keyword'] = $Keyword }
+    if($PositionTitle){ $body['PositionTitle'] = $PositionTitle }
     if($LocationName){ $body['LocationName'] = $LocationName }
     if($PayGradeLow){ $body['PayGradeLow'] = $PayGradeLow }
     if($PayGradeHigh){ $body['PayGradeHigh'] = $PayGradeHigh }
