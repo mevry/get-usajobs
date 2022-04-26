@@ -1,10 +1,12 @@
-#using module ".\classes\.psm1"
+#using module ".\classes\SavedQueryValidateSet.psm1"
+#using module ".\classes\PayGradeValidateSet.psm1"
 
 $dotSource = Get-ChildItem -Include "*.ps1" -Recurse -Path @("$PSScriptRoot\private","$PSScriptRoot\public")
 
-foreach($file in ($public + $dotSource)){
+foreach($file in $dotSource){
     try{
         #dot source script
+        Write-Host $file.FullName
         . $file.FullName
     }
     catch{

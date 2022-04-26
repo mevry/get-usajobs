@@ -1,4 +1,4 @@
-$queries = 'data/queries.json'
+$queries = 'config/queries.json'
 
 try{
 

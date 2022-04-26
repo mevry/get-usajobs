@@ -38,7 +38,6 @@ function Invoke-UsajobsPaginatedRequest{
         Write-Verbose -Message "Page: $i"
         $response = Invoke-RestMethod @requestSplat
         $response.SearchResult.SearchResultItems.MatchedObjectDescriptor
-
     }
     
 }
