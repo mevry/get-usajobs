@@ -20,7 +20,7 @@ try{
 
     #Load saved queries
     if(Test-Path $queries){
-        $Global:SavedQueries = @{}
+        $Global:SavedQueries = [ordered]@{}
         $queryObjects = Get-Content $queries | ConvertFrom-Json -Depth 10
 
         foreach($query in $queryObjects) {

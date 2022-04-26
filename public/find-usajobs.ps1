@@ -11,9 +11,8 @@ function Find-Usajobs{
         [string]$ApiKey = $Global:ApiKey,
         [ValidateSet([SavedQueryValidateSet])]
         $SavedQuery,
-
-        [switch]
-        $RawQuery
+        [string[]]$ControlNumberFilter,
+        [switch]$RawQuery
     )
     $body = $SavedQueries[$SavedQuery] | ConvertTo-Json | ConvertFrom-Json -AsHashTable
 
@@ -37,7 +36,10 @@ function Find-Usajobs{
             @{n="LowPay";e={'{0:C0}' -f ([int]$_.PositionRemuneration.MinimumRange)}}, `
             @{n="HighPay";e={'{0:C0}' -f ([int]$_.PositionRemuneration.MaximumRange)}}, `
             @{n="Rate";e={$_.PositionRemuneration.RateIntervalCode}}, `
-            PositionURI
+            PositionURI | `
+            ForEach-Object {
+                ($_.ControlNumber -notin $ControlNumberFilter) ? $_ : (Write-Verbose -Message "Excluding [$($_.ControlNumber)] $($_.PositionTitle[0..15] -join '')")
+            }
     }
 
 }

@@ -4,11 +4,12 @@
 [cmdletbinding()]
 param(
     [string]$Path = "$((Get-Date).ToString("yyyy-MM-dd"))_USAJOBSAllSearches.xlsx",
-    $ApiKey = $Global:ApiKey
+    [string]$ApiKey = $Global:ApiKey,
+    [string[]]$ControlNumberFilter
 )
 
 foreach($key in $SavedQueries.Keys){
-    $jobs = Find-Usajobs -ApiKey $ApiKey -SavedQuery $key | Sort-Object -Property 'LowPay'
+    $jobs = Find-Usajobs -ApiKey $ApiKey -SavedQuery $key -ControlNumberFilter $ControlNumberFilter | Sort-Object -Property 'LowPay' -Verbose
 
     Export-UsajobsReport -ReportObject $jobs -Name $key -Path $Path
 }
