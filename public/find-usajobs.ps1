@@ -10,6 +10,14 @@ class SavedQueryValidateSet : System.Management.Automation.IValidateSetValuesGen
         return $Global:SavedQueries.Keys
     }
 }
+
+class ServerSortFieldValidateSet : System.Management.Automation.IValidateSetValuesGenerator {
+    [string[]] GetValidValues() {
+        
+        return @("opendate","closedate","organizationname","positiontitle","salary","agency")
+    }
+}
+
 function Find-Usajobs{
     [cmdletbinding()]
     param(
@@ -26,7 +34,10 @@ function Find-Usajobs{
         [ValidateSet([PayGradeValidateSet])]
         [string]$PayGradeLow,
         [ValidateSet([PayGradeValidateSet])]
-        [string]$PayGradeHigh
+        [string]$PayGradeHigh,
+        [int]$PostedDaysAgo,
+        [ValidateSet([ServerSortFieldValidateSet])]
+        [string]$ServerSortField
     )
 
     #Initialize body
@@ -43,6 +54,12 @@ function Find-Usajobs{
     if($LocationName){ $body['LocationName'] = $LocationName }
     if($PayGradeLow){ $body['PayGradeLow'] = $PayGradeLow }
     if($PayGradeHigh){ $body['PayGradeHigh'] = $PayGradeHigh }
+    #if($DatePosted){ $body['DatePosted'] = $DatePosted }
+    if($ServerSortField){ $body['SortField'] = $ServerSortField }
+
+    #if you filter by number of days ago the job was published, you must sort
+    #by opendate on the server side, otherwise you will risk missing results
+    if($PostedDaysAgo){ $body['SortField'] = 'opendate' }
 
     $requestSplat = @{
         ApiKey = $ApiKey
@@ -63,8 +80,8 @@ function Find-Usajobs{
                 @{n="Agency";e={$_.OrganizationName}}, `
                 @{n="City";e={$_.PositionLocationDisplay -split ", " | Select-Object -First 1}}, `
                 @{n="Region";e={$_.PositionLocationDisplay -split ", " | Select-Object -First 1 -Skip 1}}, `
-                @{n="Published";e={(Get-Date $_.PublicationStartDate).ToString("MM/dd/yyyy")}}, `
-                @{n="Close";e={(Get-Date $_.ApplicationCloseDate).ToString("MM/dd/yyyy")}}, `
+                @{n="Published";e={Get-Date $_.PublicationStartDate}}, `
+                @{n="Close";e={Get-Date $_.ApplicationCloseDate}}, `
                 @{n="LowGrade";e={$_.JobGrade.Code + $_.UserArea.Details.LowGrade}}, `
                 @{n="HighGrade";e={$_.JobGrade.Code + $_.UserArea.Details.HighGrade}}, `
                 @{n="LowPay";e={[int]$_.PositionRemuneration.MinimumRange}}, `
@@ -77,7 +94,16 @@ function Find-Usajobs{
             } | `
             #Remove Multiple Locations (they tend not to respond and some aren't hiring)
             ForEach-Object {
-                if($RemoveMultipleLocations){ $_ | Where-Object { $_.City -notmatch "Multiple Locations" -and $_.City -notmatch "Location Negotiable" -and $_.Region -notmatch "United States" } }
+                if($RemoveMultipleLocations){
+                    $_ | Where-Object { $_.City -notmatch "Multiple Locations" -and $_.City -notmatch "Location Negotiable" -and $_.Region -notmatch "United States" } 
+                }
+                else{ $_ }
+            } | `
+            #Filter out based on # of days ago. API parameter for this is broken on USAJOBS
+            ForEach-Object {
+                if($PostedDaysAgo){
+                    $_ | Where-Object {$_.Published -ge (Get-Date).AddDays(-1 * $PostedDaysAgo)}
+                }
                 else{ $_ }
             }
     }
