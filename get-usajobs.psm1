@@ -6,7 +6,6 @@ $dotSource = Get-ChildItem -Include "*.ps1" -Recurse -Path @("$PSScriptRoot\priv
 foreach($file in $dotSource){
     try{
         #dot source script
-        Write-Host $file.FullName
         . $file.FullName
     }
     catch{
