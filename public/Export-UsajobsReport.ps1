@@ -24,10 +24,14 @@ function Export-UsajobsReport{
 
             $sheet = $excel.Workbook.Worksheets[$Name]
             $table = $sheet.Tables[0]
+            
+            $cityColumn = $sheet.Column($table.Columns['City'].Id)
 
             $sheet.Column($table.Columns['PositionTitle'].Id).Width = 45
             $sheet.Column($table.Columns['DepartmentName'].Id).Width = 30
             $sheet.Column($table.Columns['Agency'].Id).Width = 40
+            #Set width to 30 only if greater than 30
+            $cityColumn.Width = $cityColumn.Width -gt 30 ? 30 : $cityColumn.Width
             $sheet.Column($table.Columns['LowGrade'].Id) | Set-ExcelRange -NumberFormat "Currency" -AutoSize
             $sheet.Column($table.Columns['HighGrade'].Id) | Set-ExcelRange -NumberFormat "Currency" -AutoSize
 
