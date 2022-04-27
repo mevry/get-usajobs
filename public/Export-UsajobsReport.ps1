@@ -23,15 +23,16 @@ function Export-UsajobsReport{
             $excel = $ReportObject | Export-Excel -Path $Path -WorksheetName $Name -TableName $Name.Replace(" ", "").Replace('(',"").Replace(')',"") -AutoSize -PassThru
 
             $sheet = $excel.Workbook.Worksheets[$Name]
+            $table = $sheet.Tables[0]
 
-            $sheet.Column(2).Width = 50
-            #$sheet.Column(3).Width = 30
-            #$sheet.Column(4).Width = 30
-            $sheet.Column(10) | Set-ExcelRange -NumberFormat "Currency" -AutoSize
-            $sheet.Column(11) | Set-ExcelRange -NumberFormat "Currency" -AutoSize
+            $sheet.Column($table.Columns['PositionTitle'].Id).Width = 45
+            $sheet.Column($table.Columns['DepartmentName'].Id).Width = 30
+            $sheet.Column($table.Columns['Agency'].Id).Width = 40
+            $sheet.Column($table.Columns['LowGrade'].Id) | Set-ExcelRange -NumberFormat "Currency" -AutoSize
+            $sheet.Column($table.Columns['HighGrade'].Id) | Set-ExcelRange -NumberFormat "Currency" -AutoSize
 
             #Get Column number for position title and hyperlink
-            $table = $sheet.Tables[0]
+            
             $controlNumberColumn = $table.Columns['ControlNumber'].Id
             Write-Verbose -Message "ControlNumber Column#: $controlNumberColumn"
             $positionUriColumn = $table.Columns['PositionUri'].Id

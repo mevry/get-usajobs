@@ -60,6 +60,7 @@ function Find-Usajobs{
                 @{n="ControlNumber";e={$_.PositionUri -split "/" | Select-Object -Last 1}}, `
                 PositionTitle, `
                 DepartmentName, `
+                @{n="Agency";e={$_.SubAgency}}, `
                 @{n="City";e={$_.PositionLocationDisplay -split ", " | Select-Object -First 1}}, `
                 @{n="Region";e={$_.PositionLocationDisplay -split ", " | Select-Object -First 1 -Skip 1}}, `
                 @{n="Published";e={(Get-Date $_.PublicationStartDate).ToString("MM/dd/yyyy")}}, `
