@@ -31,11 +31,19 @@ try{
     }
 
     #Load Intelligence Careers Current Job
+    Write-Verbose -Message "Retrieving IntelligenceCareers.gov job families."
     $response = Invoke-RestMethod https://apply.intelligencecareers.gov/job-listings/search
-    $Global:IntelCareersJobFamilies = $response | Group-Object -Property jobFamily | Select-Object -ExpandProperty Name
-    if(-not $Global:IntelCareersJobFamilies) {
-        Write-Host -Message "No Intel Career job families found; Find-IntelligenceCareers may not work correctly."
+    $jobFamilies = $response | Group-Object -Property jobFamily | Select-Object -ExpandProperty Name
+
+    $scriptBlock = {
+        param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+    
+        $jobFamilies | ForEach-Object {
+              "'$_'"
+        }
     }
+   
+    Register-ArgumentCompleter -CommandName Find-IntelCareers -ParameterName JobFamily -ScriptBlock $scriptBlock
 
 }
 catch{

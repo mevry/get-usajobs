@@ -1,13 +1,6 @@
-class IntelCareersJobFamilyValidateSet : System.Management.Automation.IValidateSetValuesGenerator {
-    [string[]] GetValidValues() {
-        return $Global:IntelCareersJobFamilies
-    }
-}
-
 function Find-IntelCareers{
     [cmdletbinding()]
     param(
-        [ValidateSet([IntelCareersJobFamilyValidateSet])]
         [string]$JobFamily,
         [switch]$RawQuery
 
