@@ -8,7 +8,7 @@ It's tough to find a job with the Federal government. USAJOBS is helpful, but ha
 
 You can search based on saved queries, command line input, or a combination of both. Optionally, you can export output to an Excel spreadsheet.
 
-## Example Terminal Output
+## Example terminal output
 
 ![Command line output](img/CmdletExampleOutput.png)
 
@@ -16,7 +16,7 @@ You can search based on saved queries, command line input, or a combination of b
 
 ![Excel report output](img/ExcelExampleOutput.png)
 
-## Prequisites
+## Prerequisites
 
 * Powershell 7
 * [`ImportExcel`](https://github.com/dfinke/ImportExcel/blob/master/README.md#how-to-videos)
