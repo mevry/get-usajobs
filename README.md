@@ -55,7 +55,7 @@ $jobs = Find-Usajobs -JobCategoryCode 2210 -PayGradeLow 07 -PayGradeHigh 11 -Pos
 $jobs = Find-Usajobs -JobCategoryCode 2210 -PayGradeLow 07 -PayGradeHigh 11 -Keyword "Systems Administration"
 ```
 
-Note the different usage of `-PositionTitle` vs. `-Keyword` in the preceding example. Experiment with various combinations to tune your results.
+Note the usage of `-PositionTitle` vs. `-Keyword` in the preceding example. Experiment with various combinations to tune your results. One other parameter that may be of use is `-RemoveMultipleLocations` which filters out 'Multiple Locations', 'Location Negotiable...', and 'United States'. These results are usually indicative of generic postings that often include locations that aren't even accepting applications.
 
 You can also filter search results out that you have already applied for or are not interested in if you provide `Find-Usajobs` with their corresponding Control Numbers. Just provide it with an array of Control Number strings.
 
@@ -63,7 +63,7 @@ You can also filter search results out that you have already applied for or are 
 #Spreadsheet contains column 'ControlNumber'
 $cnfilter = Import-Excel 'C:\JobTracker.xlsx' | Select -expand 'ControlNumber'
 
-#Filter out these jobs
+#Perform search with filter applied
 $jobs = Find-Usajobs -JobCategoryCode 2210 -PayGradeLow 09 -PayGradeHigh 13 -ControlNumberFilter $cnfilter -Keyword "AWS"
 ```
 
@@ -74,7 +74,7 @@ $jobs = Find-Usajobs -JobCategoryCode 2210 -PayGradeLow 09 -PayGradeHigh 13 -Con
 Export-UsajobsReport -ReportObject $jobs -Name 'AWS'
 ```
 
-The spreadsheet must be closed to export. Furthermore, there should not already be a worksheet with the provided name.
+The spreadsheet file must be closed to export to it. Furthermore, there should not already be a worksheet with the provided name.
 
 The control numbers in the output are clickable links to the job posting.
 
