@@ -30,8 +30,8 @@ try{
 
     #Load Intelligence Careers Current Job
     $response = Invoke-RestMethod https://apply.intelligencecareers.gov/job-listings/search
-    $Global:IntelligenceCareersJobFamilies = $response | Group-Object -Property jobFamily | Select-Object -ExpandProperty Name
-    if(-not $Global:IntelligenceCareersJobFamilies) {
+    $Global:IntelCareersJobFamilies = $response | Group-Object -Property jobFamily | Select-Object -ExpandProperty Name
+    if(-not $Global:IntelCareersJobFamilies) {
         Write-Host -Message "No Intel Career job families found; Find-IntelligenceCareers may not work correctly."
     }
 
