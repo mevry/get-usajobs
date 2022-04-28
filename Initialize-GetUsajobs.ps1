@@ -5,16 +5,18 @@ try{
     if(-not (Test-Path $queries)){
         New-Item -Path $queries -Force | Out-Null
         Set-Content -ErrorAction Stop -Path $queries -Value @"
-{
-    "QueryTitle":"PowerShell Keyword",
-    "Description": "PowerShell jobs. Grades 5-13",
-    "Query":{
-        "JobCategoryCode":2210,
-        "Keyword":"PowerShell",
-        "PayGradeLow": "05",
-        "PayGradeHigh": "13"
+[
+    {
+        "QueryTitle":"PowerShell Keyword",
+        "Description": "PowerShell jobs. Grades 5-13",
+        "Query":{
+            "JobCategoryCode":2210,
+            "Keyword":"PowerShell",
+            "PayGradeLow": "05",
+            "PayGradeHigh": "13"
+        }
     }
-}
+]
 "@
     }
 
