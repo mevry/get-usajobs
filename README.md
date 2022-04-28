@@ -34,8 +34,9 @@ Import the module as you would any other module.
 
 * Job Category Code
 * Keyword Search
+* Position Title
+* Location (State)
 * Pay Grade Low/High
-* Posted # of days ago
 * Server Sort Field
 
 ### API Key
