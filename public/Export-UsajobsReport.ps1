@@ -25,22 +25,26 @@ function Export-UsajobsReport{
             $sheet = $excel.Workbook.Worksheets[$Name]
             $table = $sheet.Tables[0]
             
+            #Retrieve select columns
+            $positionTitleColumn = $sheet.Column($table.Columns['PositionTitle'].Id)
+            $departmentColumn = $sheet.Column($table.Columns['DepartmentName'].Id)
+            $agencyColumn = $sheet.Column($table.Columns['Agency'].Id)
             $cityColumn = $sheet.Column($table.Columns['City'].Id)
-
-            $sheet.Column($table.Columns['PositionTitle'].Id).Width = 45
-            $sheet.Column($table.Columns['DepartmentName'].Id).Width = 30
-            $sheet.Column($table.Columns['Agency'].Id).Width = 40
-            #Set width to 30 only if greater than 30
+            
+            #Conditionally format column widths
+            $positionTitleColumn.Width = $positionTitleColumn.Width -gt 45 ? 45 : $positionTitleColumn.Width
+            $departmentColumn.Width = $departmentColumn.Width -gt 30 ? 30 : $departmentColumn.Width
+            $agencyColumn.Width = $agencyColumn.Width -gt 40 ? 40 : $agencyColumn.Width
             $cityColumn.Width = $cityColumn.Width -gt 30 ? 30 : $cityColumn.Width
+
+            #Format pay columns as currency
             $sheet.Column($table.Columns['LowGrade'].Id) | Set-ExcelRange -NumberFormat "Currency" -AutoSize
             $sheet.Column($table.Columns['HighGrade'].Id) | Set-ExcelRange -NumberFormat "Currency" -AutoSize
 
             #Get Column number for position title and hyperlink
             
             $controlNumberColumn = $table.Columns['ControlNumber'].Id
-            Write-Verbose -Message "ControlNumber Column#: $controlNumberColumn"
             $positionUriColumn = $table.Columns['PositionUri'].Id
-            Write-Verbose -Message "PositionUri Column#: $positionUriColumn"
 
             #Map ascii to Excel column numbers
             $charDict = @{}
