@@ -1,7 +1,8 @@
 $queries = 'config/queries.json'
+$defaults = 'config/default.json'
 
 try{
-
+    #Create example saved query file
     if(-not (Test-Path $queries)){
         New-Item -Path $queries -Force | Out-Null
         Set-Content -ErrorAction Stop -Path $queries -Value @"
@@ -20,12 +21,29 @@ try{
 "@
     }
 
+    #Create global defaults file, which apply to all saved
+    #queries unless explicitly overwritten
+    if(-not (Test-Path $defaults)){
+        New-Item -Path $defaults -Force | Out-Null
+        Set-Content -ErrorAction Stop -Path $queries -Value @"
+    {
+        "PayGradeLow": "01",
+        "PayGradeHigh": "15"
+    }
+"@
+    }
+
     #Load saved queries
     if(Test-Path $queries){
         $Global:SavedQueries = [ordered]@{}
+        $defaultObject = Get-Content $defaults | ConvertFrom-Json -Depth 10
+        $defaultProperties = Get-Member -InputObject $defaultObject -MemberType NoteProperty
         $queryObjects = Get-Content $queries | ConvertFrom-Json -Depth 10
 
         foreach($query in $queryObjects) {
+            foreach($property in $defaultProperties){
+                $query.Query | Add-Member -MemberType NoteProperty -Name $property.Name -Value $defaultObject.$($property.Name) -Force
+            }
             $SavedQueries.add($query.QueryTitle, $query.Query)
         }
     }
