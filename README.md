@@ -28,6 +28,12 @@ You can search based on saved queries, command line input, or a combination of b
 
 Import the module as you would any other module.
 
+```PowerShell
+git clone https://github.com/mevry/get-usajobs
+cd get-usajobs
+Import-Module ".\get-usajobs.psd1" -Force
+```
+
 ### Configuration
 
 `get-usajobs` will create `config/queries.json` if it doesn't exist. You can use the example saved query as a template for other queries. You should be able to use any parameter that the [USAJOBS Search API](https://developer.usajobs.gov/API-Reference/GET-api-Search) supports. Keep in mind, some parameters may not work as expected, and the only ones that have been tested are the ones supported by the command line:
@@ -41,7 +47,7 @@ Import the module as you would any other module.
 
 ### API Key
 
-The cmdlets that require an API key will look to `$Global:ApiKey` if one isn't provided, so you can assign the key to `$ApiKey` in your session and not provide it each time.
+The cmdlets that require an API key will look to `$Global:ApiKey` if one isn't provided, so you can assign the key to `$ApiKey` in your session and not provide it each time. If you want a more secure solution to load your API key, you can use the strategy [here](https://adamtheautomator.com/powershell-encrypt-password/).
 
 ### Find a job
 
