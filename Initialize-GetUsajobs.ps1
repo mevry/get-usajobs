@@ -25,7 +25,7 @@ try{
     #queries unless explicitly overwritten
     if(-not (Test-Path $defaults)){
         New-Item -Path $defaults -Force | Out-Null
-        Set-Content -ErrorAction Stop -Path $queries -Value @"
+        Set-Content -ErrorAction Stop -Path $defaults -Value @"
     {
         "PayGradeLow": "01",
         "PayGradeHigh": "15"
