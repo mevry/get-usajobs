@@ -2,7 +2,7 @@
 
 Tools to automate USAJOBS searches. Targeted toward IT/technology. Ironically, it does not contain a `get-usajobs` cmdlet.
 
-It's tough to find a job with the Federal government. USAJOBS is helpful, but has some UX issues that could be improved. You may find yourself spending an inordinate amount of time tweaking keywords, pay grades, locations, and other parameters to find remotely good matches. Even still, you must contend with generic postings and irrelevant results with excessive vertical sprawl (much like this README).
+It's tough to find a job with the Federal government. USAJOBS is helpful, but has some UX issues that could be improved. You may find yourself spending an inordinate amount of time tweaking keywords, pay grades, locations, and other parameters to find remotely good matches. Even still, you must contend with generic postings and irrelevant results with excessive vertical sprawl.
 
 `get-usajobs` helps alleviate some of this by providing an easy way to tune search parameters and automate custom searches.
 
